@@ -43,14 +43,15 @@ Um auf die Benutzeroberfläche zuzugreifen, drücken Sie im Spiel die **F4-Taste
 
 Hier sind einige Beispielbilder der Benutzeroberfläche:
 
-![Beispielbild 1](images/general_tab.jpg)
 *General Tab*
+![Beispielbild 1](images/general_tab.jpg)
 
-![Beispielbild 2](images/give_tab.jpg)
 *Give Tab*
+![Beispielbild 2](images/give_tab.jpg)
 
-![Beispielbild 3](images/extra_tab.jpg)
 *Extra Tab*
+![Beispielbild 3](images/extra_tab.jpg)
+
 
 ## Lizenz
 
