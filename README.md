@@ -39,6 +39,19 @@ Nach dem Start des Spiels können Sie die folgenden Funktionen über die Benutze
 
 Um auf die Benutzeroberfläche zuzugreifen, drücken Sie im Spiel die **F4-Taste**.
 
+## Beispielbilder
+
+Hier sind einige Beispielbilder der Benutzeroberfläche:
+
+![Beispielbild 1](images/beispielbild1.png)
+*Bildbeschreibung 1*
+
+![Beispielbild 2](images/beispielbild2.png)
+*Bildbeschreibung 2*
+
+![Beispielbild 3](images/beispielbild3.png)
+*Bildbeschreibung 3*
+
 ## Beitrag
 
 Beiträge sind willkommen! Wenn Sie Verbesserungen oder neue Funktionen hinzufügen möchten:
