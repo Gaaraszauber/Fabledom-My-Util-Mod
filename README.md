@@ -37,6 +37,8 @@ Nach dem Start des Spiels können Sie die folgenden Funktionen über die Benutze
 5. **Entwicklermodus aktivieren**
 6. **Unlock-Funktionen nutzen**
 
+Um auf die Benutzeroberfläche zuzugreifen, drücken Sie im Spiel die **F4-Taste**.
+
 ## Beitrag
 
 Beiträge sind willkommen! Wenn Sie Verbesserungen oder neue Funktionen hinzufügen möchten:
