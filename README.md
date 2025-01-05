@@ -7,7 +7,6 @@ Welcome to my Fabledom Util Mod.
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
-- [Contribution](#contribution)
 - [License](#license)
 
 ## Installation
