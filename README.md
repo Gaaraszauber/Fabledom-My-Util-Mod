@@ -13,8 +13,8 @@ Willkommen zu meinem Unity3D Mod, der mit MelonLoader erstellt wurde! Dieser Mod
 ## Installation
 
 1. **Voraussetzungen**: Stellen Sie sicher, dass Sie MelonLoader installiert haben. Informationen zur Installation finden Sie auf der [MelonLoader GitHub-Seite](https://github.com/LavaGang/MelonLoader).
-2. **Mod herunterladen**: Klonen Sie dieses Repository oder laden Sie die ZIP-Datei herunter.
-3. **Mod installieren**: Kopieren Sie die DLL-Datei aus dem `Mods`-Ordner in den `Mods`-Ordner Ihres Unity3D-Spiels.
+2. **Mod herunterladen**: Laden Sie die `ZIP`-Datei herunter.
+3. **Mod installieren**: Entpacken Sie die `ZIP`-Datei in den Fabledom-Ordner.
 4. **Spiel starten**: Starten Sie das Spiel, und der Mod sollte automatisch geladen werden.
 
 ## Funktionen
@@ -22,6 +22,9 @@ Willkommen zu meinem Unity3D Mod, der mit MelonLoader erstellt wurde! Dieser Mod
 - **Saisons ändern**: Ermöglicht es Spielern, zwischen verschiedenen Jahreszeiten zu wechseln.
 - **Einheiten freischalten**: Schaltet verschiedene Einheiten wie Fablings, Bauern, Bürger und Adelige frei.
 - **Spawner-Funktionen**: Ermöglicht das Spawnen von Troll-Camps, Drachen, Hexen und Fischen.
+- **Items spawnen**: Spieler können verschiedene Items im Spiel spawnen.
+- **Entwicklermodus aktivieren**: Ermöglicht den Zugriff auf spezielle Entwicklungsfunktionen und Debugging-Optionen.
+- **Unlock-Funktionen**: Schaltet zusätzliche Spielinhalte und Funktionen frei.
 
 ## Verwendung
 
@@ -30,6 +33,9 @@ Nach dem Start des Spiels können Sie die folgenden Funktionen über die Benutze
 1. **Saisons ändern**: Klicken Sie auf die entsprechenden Schaltflächen, um die Jahreszeit zu ändern.
 2. **Einheiten freischalten**: Verwenden Sie die Schaltflächen im "Villager"-Bereich, um verschiedene Einheiten freizuschalten.
 3. **Spawner verwenden**: Nutzen Sie die Schaltflächen im "Spawner"-Bereich, um verschiedene Kreaturen zu beschwören.
+4. **Items spawnen**: Verwenden Sie die entsprechende Funktion im Spiel, um Items nach Bedarf zu spawnen.
+5. **Entwicklermodus aktivieren**: Aktivieren Sie den Entwicklermodus über die Benutzeroberfläche für erweiterte Funktionen.
+6. **Unlock-Funktionen nutzen**: Greifen Sie auf zusätzliche Inhalte zu, indem Sie die Unlock-Funktionen verwenden.
 
 ## Beitrag
 
