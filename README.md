@@ -1,62 +1,61 @@
-# Mein Unity3D Mod mit MelonLoader
+# My Fabledom Util Mod with MelonLoader
 
-Willkommen zu meinem Unity3D Mod, der mit MelonLoader erstellt wurde! Dieser Mod ermöglicht es Spielern, verschiedene Spielmechaniken zu ändern und neue Funktionen hinzuzufügen.
+Welcome to my Fabledom Util Mod.
 
-## Inhaltsverzeichnis
+## Table of Contents
 
 - [Installation](#installation)
-- [Funktionen](#funktionen)
-- [Verwendung](#verwendung)
-- [Beitrag](#beitrag)
-- [Lizenz](#lizenz)
+- [Features](#features)
+- [Usage](#usage)
+- [Contribution](#contribution)
+- [License](#license)
 
 ## Installation
 
-1. **Voraussetzungen**: Stellen Sie sicher, dass Sie MelonLoader installiert haben. Informationen zur Installation finden Sie auf der [MelonLoader GitHub-Seite](https://github.com/LavaGang/MelonLoader).
-2. **Mod herunterladen**: Laden Sie die `ZIP`-Datei herunter.
-3. **Mod installieren**: Entpacken Sie die `ZIP`-Datei in den Fabledom-Ordner.
-4. **Spiel starten**: Starten Sie das Spiel, und der Mod sollte automatisch geladen werden.
+1. **Prerequisites**: Make sure you have MelonLoader installed. You can find installation information on the [MelonLoader GitHub page](https://github.com/LavaGang/MelonLoader).
+2. **Download the Mod**: Download the `ZIP` file.
+3. **Install the Mod**: Extract the `ZIP` file into the Fabledom folder.
+4. **Start the Game**: Launch the game, and the mod should load automatically.
 
-## Funktionen
+## Features
 
-- **Saisons ändern**: Ermöglicht es Spielern, zwischen verschiedenen Jahreszeiten zu wechseln.
-- **Einheiten freischalten**: Schaltet verschiedene Einheiten wie Fablings, Bauern, Bürger und Adelige frei.
-- **Spawner-Funktionen**: Ermöglicht das Spawnen von Troll-Camps, Drachen, Hexen und Fischen.
-- **Items spawnen**: Spieler können verschiedene Items im Spiel spawnen.
-- **Entwicklermodus aktivieren**: Ermöglicht den Zugriff auf spezielle Entwicklungsfunktionen und Debugging-Optionen.
-- **Unlock-Funktionen**: Schaltet zusätzliche Spielinhalte und Funktionen frei.
+- **Change Seasons**: Allows players to switch between different seasons.
+- **Unlock Units**: Unlocks various units such as Fablings, Peasants, Citizens, and Nobles.
+- **Spawner Functions**: Enables spawning of Troll Camps, Dragons, Witches, and Fish.
+- **Spawn Items**: Players can spawn various items in the game.
+- **Activate Developer Mode**: Provides access to special development features and debugging options.
+- **Unlock Functions**: Unlocks additional game content and features.
 
-## Verwendung
+## Usage
 
-Nach dem Start des Spiels können Sie die folgenden Funktionen über die Benutzeroberfläche aufrufen:
+After starting the game, you can access the following functions through the user interface:
 
-1. **Saisons ändern**
-2. **Einheiten freischalten**
-3. **Spawner verwenden**
-4. **Items spawnen**
-5. **Entwicklermodus aktivieren**
-6. **Unlock-Funktionen nutzen**
+1. **Change Seasons**
+2. **Unlock Units**
+3. **Use Spawners**
+4. **Spawn Items**
+5. **Activate Developer Mode**
+6. **Use Unlock Functions**
 
-Um auf die Benutzeroberfläche zuzugreifen, drücken Sie im Spiel die **F4-Taste**.
+To access the user interface, press the **F4 key** while in-game.
 
-## Beispielbilder
+## Example Images
 
-Hier sind einige Beispielbilder der Benutzeroberfläche:
+Here are some example images of the user interface:
 
 *General Tab*
-![Beispielbild 1](images/general_tab.jpg)
+![Example Image 1](images/general_tab.jpg)
 
 *Give Tab*
-![Beispielbild 2](images/give_tab.jpg)
+![Example Image 2](images/give_tab.jpg)
 
 *Extra Tab*
-![Beispielbild 3](images/extra_tab.jpg)
+![Example Image 3](images/extra_tab.jpg)
 
+## License
 
-## Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz - siehe die [LICENSE](LICENSE) Datei für Details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-Vielen Dank, dass Sie sich mein Projekt angesehen haben! Bei Fragen oder Anregungen können Sie mich gerne kontaktieren.
+Thank you for checking out my project! If you have any questions or suggestions, feel free to contact me.
