@@ -30,12 +30,12 @@ Willkommen zu meinem Unity3D Mod, der mit MelonLoader erstellt wurde! Dieser Mod
 
 Nach dem Start des Spiels können Sie die folgenden Funktionen über die Benutzeroberfläche aufrufen:
 
-1. **Saisons ändern**: Klicken Sie auf die entsprechenden Schaltflächen, um die Jahreszeit zu ändern.
-2. **Einheiten freischalten**: Verwenden Sie die Schaltflächen im "Villager"-Bereich, um verschiedene Einheiten freizuschalten.
-3. **Spawner verwenden**: Nutzen Sie die Schaltflächen im "Spawner"-Bereich, um verschiedene Kreaturen zu beschwören.
-4. **Items spawnen**: Verwenden Sie die entsprechende Funktion im Spiel, um Items nach Bedarf zu spawnen.
-5. **Entwicklermodus aktivieren**: Aktivieren Sie den Entwicklermodus über die Benutzeroberfläche für erweiterte Funktionen.
-6. **Unlock-Funktionen nutzen**: Greifen Sie auf zusätzliche Inhalte zu, indem Sie die Unlock-Funktionen verwenden.
+1. **Saisons ändern**
+2. **Einheiten freischalten**
+3. **Spawner verwenden**
+4. **Items spawnen**
+5. **Entwicklermodus aktivieren**
+6. **Unlock-Funktionen nutzen**
 
 ## Beitrag
 
