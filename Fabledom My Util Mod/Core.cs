@@ -18,7 +18,7 @@ namespace Fabledom_My_Util_Mod
 
         private bool _open = false;
         private int _selectedTab = 0;
-        private string[] _tabNames = new string[] { "General", "Give Cheats", "Extra" };
+        private string[] _tabNames = new string[] { "General", "Give Cheats", "Kingdom", "Extra" };
         private Rect _windowRect = new Rect(500, 50, WINDOW_WIDTH, WINDOW_HEIGHT);
         private GameObject _singletons;
         private DataManager _dataManager;
@@ -34,9 +34,12 @@ namespace Fabledom_My_Util_Mod
         private bool _unlockAllDone = false;
         private int _amount = 0;
 
+        private Utils utils;
+
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg("Fabledom Util Mod is Initialized.");
+            utils = new Utils(this);
         }
 
         private void InitializeReferences()
@@ -88,13 +91,6 @@ namespace Fabledom_My_Util_Mod
                 LoggerInstance.Msg($"Dev mode set to: {_gameManager.isDevBuild}");
                 _toggleDevModOld = !_toggleDevModOld;
             }
-
-            if (_toggleUnlockAll && !_unlockAllDone)
-            {
-                LoggerInstance.Msg("Starting UnlockALL coroutine");
-                MelonCoroutines.Start(UnlockAllCoroutine());
-                _unlockAllDone = true;
-            }
         }
 
         private void DrawMenu()
@@ -115,10 +111,18 @@ namespace Fabledom_My_Util_Mod
                     DrawGiveCheatsTab();
                     break;
                 case 2:
+                    DrawKingdomTab();
+                    break;
+                case 3:
                     DrawExtraTab();
                     break;
             }
             GUI.DragWindow(new Rect(0, 0, 10000, 20));
+        }
+
+        private void DrawKingdomTab()
+        {
+            GUILayout.Label("Kingdom WIP", GUI.skin.box);
         }
 
         private void DrawGeneralTab()
@@ -127,11 +131,11 @@ namespace Fabledom_My_Util_Mod
             _toggleDevMod = GUILayout.Toggle(_toggleDevMod, "Dev Mode | Status: " + _gameManager.isDevBuild);
 
             DrawCenteredButtons(new string[] { "Unlock All", "Unlock all Ruler", "Unlock all Equipment" },
-                new System.Action[] { UnlockAll, UnlockAllRulers, UnlockAllEquipment }, 450);
+                new System.Action[] { utils.UnlockAll, utils.UnlockAllRulers, utils.UnlockAllEquipment }, 450);
 
             GUILayout.Label("Change Seasons", GUI.skin.box);
             DrawCenteredButtons(new string[] { "Spring", "Summer", "Fall", "Winter" },
-                new System.Action[] { () => ChangeSeason(0), () => ChangeSeason(1), () => ChangeSeason(2), () => ChangeSeason(3) }, 400);
+                new System.Action[] { () => utils.ChangeSeason(0), () => utils.ChangeSeason(1), () => utils.ChangeSeason(2), () => utils.ChangeSeason(3) }, 400);
         }
 
         private void DrawGiveCheatsTab()
@@ -147,9 +151,11 @@ namespace Fabledom_My_Util_Mod
             GUILayout.EndHorizontal();
 
             GUILayout.Label("Villager", GUI.skin.box);
+            if (int.TryParse(_inputItemAmount, out int amount)) { _amount = amount;  }
+
             DrawCenteredButtons(new string[] { "Fablings", "Peasants", "Commoners", "Nobles" },
-                new System.Action[] { () => SpawnVillagers(), () => SpawnVillagers(FablingClass.PEASANT),
-                                      () => SpawnVillagers(FablingClass.COMMONER), () => SpawnVillagers(FablingClass.NOBLE) }, 400);
+            new System.Action[] { () => utils.SpawnVillagers(_amount), () => utils.SpawnVillagers(FablingClass.PEASANT,_amount),
+                                    () => utils.SpawnVillagers(FablingClass.COMMONER,_amount), () => utils.SpawnVillagers(FablingClass.NOBLE,_amount) }, 400);
 
             GUILayout.Label("Items", GUI.skin.box);
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
@@ -161,23 +167,23 @@ namespace Fabledom_My_Util_Mod
 
                 if (GUILayout.Button(dataList[i].name, GUILayout.Width(buttonWidth)))
                 {
-                    GiveItem(dataList[i].key, _inputItemAmount);
+                    utils.GiveItem(dataList[i].key, _inputItemAmount);
                 }
 
                 if (i % BUTTONS_PER_ROW == BUTTONS_PER_ROW - 1 || i == dataList.Count - 1)
                 {
-                    if (i < 25) GUILayout.EndHorizontal();
+                    if(i < 25) GUILayout.EndHorizontal();
                 }
             }
 
-
+            
             if (GUILayout.Button("Nobility", GUILayout.Width(buttonWidth)))
             {
-                AlterNobility();
+                utils.AlterNobility(_amount);
             }
             if (GUILayout.Button("Fort", GUILayout.Width(buttonWidth)))
             {
-                AlterFortification();
+                utils.AlterFortification(_amount);
             }
             GUILayout.EndHorizontal();
 
@@ -189,7 +195,7 @@ namespace Fabledom_My_Util_Mod
             GUILayout.Label("Extra Functions", GUI.skin.box);
             GUILayout.Label("Spawner", GUI.skin.box);
             DrawCenteredButtons(new string[] { "Troll Camp", "Dragon", "Witches", "Fish" },
-                new System.Action[] { SpawnTrollCamp, SpawnDragon, SpawnWickedWitches, SpawnFish }, 400);
+                new System.Action[] { utils.SpawnTrollCamp, utils.SpawnDragon, utils.SpawnWickedWitches, utils.SpawnFish }, 400);
         }
 
         private void DrawCenteredButtons(string[] buttonTexts, System.Action[] actions, int totalWidth)
@@ -211,133 +217,6 @@ namespace Fabledom_My_Util_Mod
             GUILayout.EndVertical();
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-        }
-
-        private void GiveItem(string itemName, string amount)
-        {
-            if (int.TryParse(amount, out int itemAmount))
-            {
-                if (itemName == "coin")
-                {
-                    Utils_Resources.AddCoins(itemAmount);
-                }
-                else if (itemName == "feastSupplies")
-                {
-                    Utils_Resources.AddFeastSupplies(itemAmount);
-                }
-                else
-                {
-                    DebugWindow.ADD_RESOURCE.Invoke(itemName, itemAmount);
-                }
-            }
-            else
-            {
-                LoggerInstance.Error("Invalid amount entered");
-            }
-        }
-
-        private IEnumerator UnlockAllCoroutine()
-        {
-            GameManager.Instance.debugUnlocked = true;
-            UIManager.Instance.UpdateUnlockableUi();
-            TerritoryManager.Instance.UnlockAll();
-            UIManager.Instance.kingdomInfoContainer.ShowFeastSuppliesContainer();
-            UIManager.Instance.kingdomInfoContainer.ShowActiveMissionsContainer();
-            UIManager.Instance.kingdomInfoContainer.ShowNobilityContainer();
-            UIManager.Instance.kingdomInfoContainer.ShowFortificationContainer();
-            yield return null;
-
-            PlaceConstructableButton[] buttons = UIManager.Instance.buildBarContent.GetComponentsInChildren<PlaceConstructableButton>(true);
-            foreach (var button in buttons)
-            {
-                button.UpdateStatus();
-                yield return null;
-            }
-
-            _toggleUnlockAll = false;
-            yield return null;
-        }
-
-        private void ChangeSeason(int seasonID)
-        {
-            DateTimeManager.Instance.SetSeason((Season)seasonID);
-        }
-
-        private void UnlockAll()
-        {
-            if (!_unlockAllDone)
-            {
-                LoggerInstance.Msg("Starting UnlockALL coroutine");
-                MelonCoroutines.Start(UnlockAllCoroutine());
-                _unlockAllDone = true;
-            }
-        }
-
-        private void UnlockAllRulers()
-        {
-            WorldMapGameplayManager.Instance.DebugShowAllRulers();
-        }
-
-        private void UnlockAllEquipment()
-        {
-            for (int i = 0; i < DataManager.Instance.equipmentSoData.Count; i++)
-            {
-                DataManager.Instance.ReceiveEquipment(DataManager.Instance.equipmentSoData[i].key);
-            }
-        }
-
-        private void SpawnVillagers(FablingClass fablingClass)
-        {
-            if (int.TryParse(_inputItemAmount, out int amount))
-            {
-                KingdomManager.Instance.ForceImmigration(fablingClass, amount);
-            }
-        }
-
-        private void SpawnVillagers()
-        {
-            if (int.TryParse(_inputItemAmount, out int amount))
-            {
-                KingdomManager.Instance.ForceImmigration(amount);
-            }
-        }
-
-
-
-        private void AlterNobility()
-        {
-            if (int.TryParse(_inputItemAmount, out int amount))
-            {
-                KingdomManager.Instance.AlterNobility(amount);
-            }
-        }
-
-        private void AlterFortification()
-        {
-            if (int.TryParse(_inputItemAmount, out int amount))
-            {
-                KingdomManager.Instance.AlterFortification(amount);
-            }
-        }
-
-        private void SpawnTrollCamp()
-        {
-            KingdomManager.Instance.SpawnTrollCamp();
-        }
-
-        private void SpawnDragon()
-        {
-            KingdomManager.Instance.SpawnDragon();
-        }
-
-        private void SpawnWickedWitches()
-        {
-            KingdomManager.Instance.SpawnWickedWitches();
-        }
-
-        private void SpawnFish()
-        {
-            KingdomManager.Instance.SpawnFish();
         }
     }
 }

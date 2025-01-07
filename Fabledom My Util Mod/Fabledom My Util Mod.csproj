@@ -447,6 +447,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="Utils.cs" />
 		<Compile Include="Core.cs" />
 	</ItemGroup>
 	
