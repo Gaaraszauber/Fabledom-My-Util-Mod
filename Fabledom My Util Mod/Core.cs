@@ -4,8 +4,12 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using Nielsen;
 using UnityEngine.InputSystem;
+using HarmonyLib;
+using System.Reflection;
+using Harmony;
 
-[assembly: MelonInfo(typeof(Fabledom_My_Util_Mod.Core), "Fabledom My Util Mod", "0.0.2", "Gaaraszauber", null)]
+
+[assembly: MelonInfo(typeof(Fabledom_My_Util_Mod.Core), "Fabledom My Util Mod", "0.0.3", "Gaaraszauber", null)]
 [assembly: MelonGame("Grenaa Games", "Fabledom")]
 
 namespace Fabledom_My_Util_Mod
@@ -20,14 +24,10 @@ namespace Fabledom_My_Util_Mod
         private int _selectedTab = 0;
         private string[] _tabNames = new string[] { "General", "Give Cheats", "Kingdom", "Extra" };
         private Rect _windowRect = new Rect(500, 50, WINDOW_WIDTH, WINDOW_HEIGHT);
-        private GameObject _singletons;
         private DataManager _dataManager;
         private GameManager _gameManager;
-        private KingdomManager _kingdomManager;
-        private SeasonController _seasonController;
         private bool _toggleDevMod = false;
         private bool _toggleDevModOld = false;
-        private bool _toggleUnlockAll = false;
         private string _inputItemAmount = "1";
         private Vector2 _scrollPosition;
         private bool _initializeReferencesDone = false;
@@ -36,20 +36,23 @@ namespace Fabledom_My_Util_Mod
 
         private Utils utils;
 
+        public static bool InstantBuildNoMaterialsToggle = false;
+
+
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg("Fabledom Util Mod is Initialized.");
             utils = new Utils(this);
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.gaaraszauber.fabledommod");
+            harmony.PatchAll(typeof(MyHarmonyPatches));
         }
+
 
         private void InitializeReferences()
         {
             LoggerInstance.Msg("Initialize References loading");
-            _singletons = GameObject.Find("Singletons");
             _gameManager = GameObject.FindObjectOfType<GameManager>();
             _dataManager = GameObject.FindObjectOfType<DataManager>();
-            _kingdomManager = GameObject.FindObjectOfType<KingdomManager>();
-            _seasonController = GameObject.FindObjectOfType<SeasonController>();
             _initializeReferencesDone = true;
             LoggerInstance.Msg("Initialize References finished.");
         }
@@ -122,7 +125,9 @@ namespace Fabledom_My_Util_Mod
 
         private void DrawKingdomTab()
         {
-            GUILayout.Label("Kingdom WIP", GUI.skin.box);
+            GUILayout.Label("Kingdom", GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUILayout.EndHorizontal();
         }
 
         private void DrawGeneralTab()
@@ -175,8 +180,7 @@ namespace Fabledom_My_Util_Mod
                     if(i < 25) GUILayout.EndHorizontal();
                 }
             }
-
-            
+  
             if (GUILayout.Button("Nobility", GUILayout.Width(buttonWidth)))
             {
                 utils.AlterNobility(_amount);
@@ -193,9 +197,10 @@ namespace Fabledom_My_Util_Mod
         private void DrawExtraTab()
         {
             GUILayout.Label("Extra Functions", GUI.skin.box);
+            Core.InstantBuildNoMaterialsToggle = GUILayout.Toggle(Core.InstantBuildNoMaterialsToggle, "Instant Build (No Materials)");
             GUILayout.Label("Spawner", GUI.skin.box);
             DrawCenteredButtons(new string[] { "Troll Camp", "Dragon", "Witches", "Fish" },
-                new System.Action[] { utils.SpawnTrollCamp, utils.SpawnDragon, utils.SpawnWickedWitches, utils.SpawnFish }, 400);
+                new System.Action[] { utils.SpawnTrollCamp, utils.SpawnDragon, utils.SpawnWickedWitches, utils.SpawnFish }, 400);   
         }
 
         private void DrawCenteredButtons(string[] buttonTexts, System.Action[] actions, int totalWidth)
@@ -218,5 +223,21 @@ namespace Fabledom_My_Util_Mod
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
         }
+
+        private static bool InstantBuildPrefix(Nielsen.Constructable __instance)
+        {
+            var healthField = HarmonyLib.AccessTools.Field(typeof(Nielsen.Constructable), "health");
+            var health = (Health)healthField.GetValue(__instance);
+            health.Heal(health.totalMaxHealth);
+
+            var buildCompleteMethod = HarmonyLib.AccessTools.Method(typeof(Nielsen.Constructable), "BuildComplete");
+            buildCompleteMethod.Invoke(__instance, null);
+
+            return false;
+        }
+
+
+        
+
     }
 }
