@@ -7,7 +7,7 @@ Welcome to my Fabledom Util Mod.
 - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
-- [In Dev](#inDev)
+- [Progress](#Progress)
 - [License](#license)
 - [Virustotal](#virustotal)
 
@@ -40,7 +40,12 @@ After starting the game, you can access the following functions through the user
 
 To access the user interface, press the **F4 key** while in-game.
 
-## In Dev
+## Progress
+- **Instant Building**
+- **More Villager in Homestead**
+- **Quests**
+- **Weather System**
+- **Resource Gathering Multiplier**
 
 
 
