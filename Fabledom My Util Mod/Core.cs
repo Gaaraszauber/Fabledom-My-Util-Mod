@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using HarmonyLib;
 using System.Reflection;
 using Harmony;
+using static Febucci.UI.TextAnimator;
 
 
 [assembly: MelonInfo(typeof(Fabledom_My_Util_Mod.Core), "Fabledom My Util Mod", "0.0.3", "Gaaraszauber", null)]
@@ -16,13 +17,16 @@ namespace Fabledom_My_Util_Mod
 {
     public class Core : MelonMod
     {
+        //Wichtig bitte immer anpassen
+        private string CURRENT_VERSION = "";
+
         private const int WINDOW_HEIGHT = 400;
         private const int WINDOW_WIDTH = 600;
         private const int BUTTONS_PER_ROW = 5;
 
         private bool _open = false;
         private int _selectedTab = 0;
-        private string[] _tabNames = new string[] { "General", "Give Cheats", "Kingdom", "Extra" };
+        private string[] _tabNames = new string[] { "General", "Give Cheats", "Extra" };
         private Rect _windowRect = new Rect(500, 50, WINDOW_WIDTH, WINDOW_HEIGHT);
         private DataManager _dataManager;
         private GameManager _gameManager;
@@ -36,16 +40,59 @@ namespace Fabledom_My_Util_Mod
 
         private Utils utils;
 
+
+        private float _resourceMultiplier = 1f;
+        private float _timeScale = 1;
+
+        private UpdateChecker updateChecker = new UpdateChecker();
+
+
         public static bool InstantBuildNoMaterialsToggle = false;
+        public static float constructionSpeed = 1;
 
 
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg("Fabledom Util Mod is Initialized.");
+            CURRENT_VERSION = Info.Version;
+
+            CheckForUpdates();
             utils = new Utils(this);
             HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.gaaraszauber.fabledommod");
             harmony.PatchAll(typeof(MyHarmonyPatches));
         }
+
+        private async void CheckForUpdates()
+        {
+            LoggerInstance.Msg("Checking for Updates....");
+            try
+            {
+                string latestVersion = await updateChecker.GetLatestVersion();
+                LoggerInstance.Msg($"Installed Version:  {CURRENT_VERSION}");
+                LoggerInstance.Msg($"Latest Version:  {latestVersion}");
+                if (CompareVersions(CURRENT_VERSION, latestVersion) < 0)
+                {
+                    LoggerInstance.Warning($"A new version is available: {latestVersion}\nDownloads:\nNexusmods: https://www.nexusmods.com/fabledom/mods/1\nGithub: https://github.com/Gaaraszauber/Fabledom-My-Util-Mod/\n");                    
+                }
+                else
+                {
+                    LoggerInstance.Msg("You already have the current version installed.");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerInstance.Error($"Error retrieving the latest version: {ex.Message}");
+            }
+        }
+
+        private int CompareVersions(string version1, string version2)
+        {
+            var v1 = new Version(version1);
+            var v2 = new Version(version2);
+            return v1.CompareTo(v2);
+        }
+
 
 
         private void InitializeReferences()
@@ -91,7 +138,7 @@ namespace Fabledom_My_Util_Mod
             if (_gameManager != null && _toggleDevMod != _toggleDevModOld)
             {
                 _gameManager.isDevBuild = _toggleDevMod;
-                LoggerInstance.Msg($"Dev mode set to: {_gameManager.isDevBuild}");
+                LoggerInstance.Msg($"Dev mode set to: {_gameManager.isDevBuild}" );
                 _toggleDevModOld = !_toggleDevModOld;
             }
         }
@@ -99,6 +146,9 @@ namespace Fabledom_My_Util_Mod
         private void DrawMenu()
         {
             GUI.skin.window.padding = new RectOffset(10, 10, 20, 10);
+            // Dunklerer Hintergrund
+            GUI.backgroundColor = new Color(0.1f, 0.1f, 0.1f, 0.98f);
+
             _windowRect = GUI.Window(0, _windowRect, DrawWindowContents, "Fabledom Util Mod by Gaaraszauber");
         }
 
@@ -114,26 +164,16 @@ namespace Fabledom_My_Util_Mod
                     DrawGiveCheatsTab();
                     break;
                 case 2:
-                    DrawKingdomTab();
-                    break;
-                case 3:
                     DrawExtraTab();
                     break;
             }
             GUI.DragWindow(new Rect(0, 0, 10000, 20));
         }
 
-        private void DrawKingdomTab()
-        {
-            GUILayout.Label("Kingdom", GUI.skin.box);
-            GUILayout.BeginHorizontal();
-            GUILayout.EndHorizontal();
-        }
-
         private void DrawGeneralTab()
         {
             GUILayout.Label("Generally Cheats", GUI.skin.box);
-            _toggleDevMod = GUILayout.Toggle(_toggleDevMod, "Dev Mode | Status: " + _gameManager.isDevBuild);
+            _toggleDevMod = GUILayout.Toggle(_toggleDevMod, "Dev Mode | Status: " + _gameManager.isDevBuild + " | When active, you will not receive any achievements!");
 
             DrawCenteredButtons(new string[] { "Unlock All", "Unlock all Ruler", "Unlock all Equipment" },
                 new System.Action[] { utils.UnlockAll, utils.UnlockAllRulers, utils.UnlockAllEquipment }, 450);
@@ -141,6 +181,14 @@ namespace Fabledom_My_Util_Mod
             GUILayout.Label("Change Seasons", GUI.skin.box);
             DrawCenteredButtons(new string[] { "Spring", "Summer", "Fall", "Winter" },
                 new System.Action[] { () => utils.ChangeSeason(0), () => utils.ChangeSeason(1), () => utils.ChangeSeason(2), () => utils.ChangeSeason(3) }, 400);
+
+            GUILayout.Label("Change Weather", GUI.skin.box);
+            DrawCenteredButtons(new string[] { "Sunny", "Rainy" },
+                new System.Action[] {
+                    () => DateTimeManager.Instance.weatherController.SetWeatherState(Weather.SUNNY),
+                    () => DateTimeManager.Instance.weatherController.SetWeatherState(Weather.RAIN)
+                }, 400);
+
         }
 
         private void DrawGiveCheatsTab()
@@ -162,7 +210,7 @@ namespace Fabledom_My_Util_Mod
             new System.Action[] { () => utils.SpawnVillagers(_amount), () => utils.SpawnVillagers(FablingClass.PEASANT,_amount),
                                     () => utils.SpawnVillagers(FablingClass.COMMONER,_amount), () => utils.SpawnVillagers(FablingClass.NOBLE,_amount) }, 400);
 
-            GUILayout.Label("Items", GUI.skin.box);
+            GUILayout.Label("Items and More", GUI.skin.box);
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             int buttonWidth = (WINDOW_WIDTH - 30) / BUTTONS_PER_ROW - 4;
 
@@ -189,6 +237,11 @@ namespace Fabledom_My_Util_Mod
             {
                 utils.AlterFortification(_amount);
             }
+
+            if (GUILayout.Button("Happiness", GUILayout.Width(buttonWidth)))
+            {
+                KingdomManager.Instance.debugHappiness = _amount;
+            }
             GUILayout.EndHorizontal();
 
             GUILayout.EndScrollView();
@@ -200,7 +253,7 @@ namespace Fabledom_My_Util_Mod
             Core.InstantBuildNoMaterialsToggle = GUILayout.Toggle(Core.InstantBuildNoMaterialsToggle, "Instant Build (No Materials)");
             GUILayout.Label("Spawner", GUI.skin.box);
             DrawCenteredButtons(new string[] { "Troll Camp", "Dragon", "Witches", "Fish" },
-                new System.Action[] { utils.SpawnTrollCamp, utils.SpawnDragon, utils.SpawnWickedWitches, utils.SpawnFish }, 400);   
+                new System.Action[] { utils.SpawnTrollCamp, utils.SpawnDragon, utils.SpawnWickedWitches, utils.SpawnFish }, 400);
         }
 
         private void DrawCenteredButtons(string[] buttonTexts, System.Action[] actions, int totalWidth)
@@ -235,9 +288,5 @@ namespace Fabledom_My_Util_Mod
 
             return false;
         }
-
-
-        
-
     }
 }

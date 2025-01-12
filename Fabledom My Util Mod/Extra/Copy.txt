@@ -1,0 +1,35 @@
+WorldObjectData.residentCapacity => anzahl von Bewohnern in Häusern // 5 können nur in UI angezeigt werden
+==> Homestead(Clone) 
+==> Town house(Clone)
+aber nur wenn 	public bool isHousing; true is
+
+
+World Object Data => WorldObjectData.workerCapacity Anzahl wie viele beim Gebäuse arbeiten könn
+==> Messengers guild(Clone)
+==> Stockpile(Clone) => AttachmentInfo.limit es gibt ein min und max
+isHousing => schaut ob man darin wohnen kann
+
+
+Sawmill(Clone) => 
+ ==> ProductionPlace.currentProgress  --> ÄNdern
+
+ => ProductionPlace ==> set to always true, that isn using any Materials
+ public bool HasEnoughInput()
+		{
+			for (int i = 0; i < this.GetResourcePathData().inputs.Count; i++)
+			{
+				if (!this.storage.HasAmountStored(this.GetResourcePathData().inputs[i].resourceData.key, this.GetResourcePathData().inputs[i].amount))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+
+
+===> Constructable => public float constructionSpeed
+
+QuestManager ===> 
+
+KingdomManager.Instance.debugHappiness += x; => Föhlichkeit 0 - 100

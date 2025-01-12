@@ -1,0 +1,4 @@
+changelog 0.0.2
+- Instant Building
+- Weather Syste (rain/sunny)
+- added Happiness to give cheat

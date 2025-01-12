@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Nielsen;
 using System.Reflection;
+using UnityEngine;
 
 namespace Fabledom_My_Util_Mod
 {
@@ -18,9 +19,25 @@ namespace Fabledom_My_Util_Mod
                     return false;
                 }
                 return true;
+
+
             }
         }
 
+        //Patch ob die Bewohner Anzahl auf 5 zu setzen bei jeden Haus
+        /*[HarmonyPatch(typeof(WorldObjectData))]
+        [HarmonyPatch(nameof(WorldObjectData.residentCapacity), MethodType.Getter)]
+        private class ResidentCapacityPatch
+        {
+            [HarmonyPostfix]
+            private static void Postfix(WorldObjectData __instance, ref int __result)
+            {
+                if (__instance.isHousing)
+                {
+                    __result = Mathf.Min(__result, 5);
+                }
+            
+        }*/
 
     }
 }

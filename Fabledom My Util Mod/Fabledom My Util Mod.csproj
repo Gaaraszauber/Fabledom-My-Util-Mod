@@ -447,6 +447,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="UpdateChecker.cs" />
 		<Compile Include="MyHarmonyPatches.cs" />
 		<Compile Include="Utils.cs" />
 		<Compile Include="Core.cs" />
