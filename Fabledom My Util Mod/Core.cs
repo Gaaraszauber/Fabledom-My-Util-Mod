@@ -10,14 +10,13 @@ using Harmony;
 using static Febucci.UI.TextAnimator;
 
 
-[assembly: MelonInfo(typeof(Fabledom_My_Util_Mod.Core), "Fabledom My Util Mod", "0.0.3", "Gaaraszauber", null)]
+[assembly: MelonInfo(typeof(Fabledom_My_Util_Mod.Core), "Fabledom My Util Mod", "0.0.4", "Gaaraszauber", null)]
 [assembly: MelonGame("Grenaa Games", "Fabledom")]
 
 namespace Fabledom_My_Util_Mod
 {
     public class Core : MelonMod
     {
-        //Wichtig bitte immer anpassen
         private string CURRENT_VERSION = "";
 
         private const int WINDOW_HEIGHT = 400;
@@ -40,7 +39,6 @@ namespace Fabledom_My_Util_Mod
 
         private Utils utils;
 
-
         private float _resourceMultiplier = 1f;
         private float _timeScale = 1;
 
@@ -49,6 +47,7 @@ namespace Fabledom_My_Util_Mod
 
         public static bool InstantBuildNoMaterialsToggle = false;
         public static float constructionSpeed = 1;
+        public static bool AlwaysShowDebugButtons = false;
 
 
         public override void OnInitializeMelon()
@@ -58,9 +57,20 @@ namespace Fabledom_My_Util_Mod
 
             CheckForUpdates();
             utils = new Utils(this);
-            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.gaaraszauber.fabledommod");
-            harmony.PatchAll(typeof(MyHarmonyPatches));
+
+            try
+            {
+                HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.gaaraszauber.fabledommod");
+                harmony.PatchAll(typeof(MyHarmonyPatches));
+            }
+            catch (Exception ex)
+            {
+                LoggerInstance.Error($"Failed to apply Harmony patches: {ex}");
+            }
+
         }
+
+
 
         private async void CheckForUpdates()
         {
@@ -92,8 +102,6 @@ namespace Fabledom_My_Util_Mod
             var v2 = new Version(version2);
             return v1.CompareTo(v2);
         }
-
-
 
         private void InitializeReferences()
         {
@@ -251,9 +259,11 @@ namespace Fabledom_My_Util_Mod
         {
             GUILayout.Label("Extra Functions", GUI.skin.box);
             Core.InstantBuildNoMaterialsToggle = GUILayout.Toggle(Core.InstantBuildNoMaterialsToggle, "Instant Build (No Materials)");
+            Core.AlwaysShowDebugButtons = GUILayout.Toggle(Core.AlwaysShowDebugButtons, "Activate/Deactivate Influence Buttons");
             GUILayout.Label("Spawner", GUI.skin.box);
             DrawCenteredButtons(new string[] { "Troll Camp", "Dragon", "Witches", "Fish" },
                 new System.Action[] { utils.SpawnTrollCamp, utils.SpawnDragon, utils.SpawnWickedWitches, utils.SpawnFish }, 400);
+
         }
 
         private void DrawCenteredButtons(string[] buttonTexts, System.Action[] actions, int totalWidth)

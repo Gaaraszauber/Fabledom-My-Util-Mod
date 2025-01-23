@@ -33,3 +33,7 @@ Sawmill(Clone) =>
 QuestManager ===> 
 
 KingdomManager.Instance.debugHappiness += x; => Föhlichkeit 0 - 100
+
+Worker.Needs
+
+AstarAgent.baseSpeed => lauf speed der villager

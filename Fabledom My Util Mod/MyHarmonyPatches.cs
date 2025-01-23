@@ -24,20 +24,26 @@ namespace Fabledom_My_Util_Mod
             }
         }
 
-        //Patch ob die Bewohner Anzahl auf 5 zu setzen bei jeden Haus
-        /*[HarmonyPatch(typeof(WorldObjectData))]
-        [HarmonyPatch(nameof(WorldObjectData.residentCapacity), MethodType.Getter)]
-        private class ResidentCapacityPatch
+        [HarmonyPatch(typeof(WorldMapButtonPanel))]
+        [HarmonyPatch("OnEnable")]
+        private static class WorldMapButtonPanelPatch
         {
             [HarmonyPostfix]
-            private static void Postfix(WorldObjectData __instance, ref int __result)
+            private static void Postfix(WorldMapButtonPanel __instance)
             {
-                if (__instance.isHousing)
+                var debugPositiveField = AccessTools.Field(typeof(WorldMapButtonPanel), "debugPositive");
+                var debugNegativeField = AccessTools.Field(typeof(WorldMapButtonPanel), "debugNegative");
+
+                var debugPositive = debugPositiveField?.GetValue(__instance) as GameObject;
+                var debugNegative = debugNegativeField?.GetValue(__instance) as GameObject;
+
+                if (debugPositive != null && debugNegative != null)
                 {
-                    __result = Mathf.Min(__result, 5);
+                    debugPositive.SetActive(Core.AlwaysShowDebugButtons);
+                    debugNegative.SetActive(Core.AlwaysShowDebugButtons);
                 }
-            
-        }*/
+            }
+        }
 
     }
 }
